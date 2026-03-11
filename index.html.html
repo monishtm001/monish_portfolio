@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monish Kumar T M | ML Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ─────────────────────────────────────────────
+       RESET & TOKENS
+    ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #080810;
+      --bg2:      #0f0f1a;
+      --bg3:      #14141f;
+      --card:     #0e0e1b;
+      --border:   #1c1c2e;
+      --border2:  #252538;
+      --accent:   #6d5dfc;
+      --accent2:  #a78bfa;
+      --green:    #34d399;
+      --red:      #f87171;
+      --text:     #e2e2f0;
+      --muted:    #6b6b8a;
+      --muted2:   #9898b8;
+      --radius:   8px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: 'JetBrains Mono', monospace; cursor: pointer; border: none; }
+
+    /* ─────────────────────────────────────────────
+       LAYOUT
+    ───────────────────────────────────────────── */
+    .page-wrap { min-height: 100vh; display: flex; flex-direction: column; }
+    .content-wrap { flex: 1; }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ─────────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(8,8,16,0.82);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 2rem;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-weight: 700; font-size: 0.95rem; color: var(--accent2);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .nav-logo .cursor-blink {
+      display: inline-block; width: 8px; height: 14px;
+      background: var(--green); border-radius: 1px;
+      animation: blink 1.1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
+    .nav-links button {
+      background: none; color: var(--muted2); font-size: 0.78rem;
+      padding: 0.35rem 0.75rem; border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links button:hover,
+    .nav-links button.active { color: var(--accent2); background: rgba(109,93,252,0.1); }
+    .nav-hamburger {
+      display: none; background: none; color: var(--muted2);
+      font-size: 1.2rem; padding: 0.3rem;
+    }
+    .mobile-menu {
+      display: none; flex-direction: column; gap: 0;
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 0.5rem 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu button {
+      background: none; color: var(--muted2); font-size: 0.82rem;
+      padding: 0.75rem 2rem; text-align: left;
+      border-bottom: 1px solid var(--border); transition: color 0.2s;
+    }
+    .mobile-menu button:hover { color: var(--accent2); }
+
+    /* ─────────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────────── */
+    .hero {
+      padding: 9rem 0 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: 0; left: -20%;
+      width: 700px; height: 700px;
+      background: radial-gradient(ellipse, rgba(109,93,252,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute; bottom: -10%; right: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(ellipse, rgba(52,211,153,0.04) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      font-size: 0.72rem; color: var(--green);
+      margin-bottom: 1.2rem; letter-spacing: 0.08em;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 800; line-height: 1.0;
+      color: #fff; margin-bottom: 1.4rem;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, var(--accent2) 0%, var(--green) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      color: var(--muted2); font-size: 0.88rem; max-width: 520px;
+      margin-bottom: 0.7rem; line-height: 1.75;
+    }
+    .hero-location {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      color: var(--muted); font-size: 0.72rem; margin-bottom: 2.2rem;
+    }
+    .hero-location svg { width: 12px; height: 12px; fill: var(--green); }
+    .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.4rem; border-radius: var(--radius);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      font-weight: 500; transition: all 0.22s; border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(109,93,252,0.3);
+    }
+    .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); box-shadow: 0 0 28px rgba(167,139,250,0.35); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--accent2); border-color: var(--border2);
+    }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(109,93,252,0.08); transform: translateY(-1px); }
+
+    /* pills scroll */
+    .pills-track { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 3rem; }
+    .pill {
+      padding: 0.22rem 0.75rem; border-radius: 20px;
+      font-size: 0.68rem; color: var(--muted2);
+      background: var(--card); border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .pill:hover { border-color: var(--accent); color: var(--accent2); }
+
+    /* stats */
+    .stats-row { display: flex; gap: 3rem; flex-wrap: wrap; }
+    .stat-num {
+      font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
+      color: var(--accent2); line-height: 1;
+    }
+    .stat-label { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* ─────────────────────────────────────────────
+       SECTION SHARED
+    ───────────────────────────────────────────── */
+    .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+    .section-head { margin-bottom: 2.5rem; }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 700; color: #fff;
+    }
+    .section-title span { color: var(--accent); }
+    .section-sub { color: var(--muted); font-size: 0.78rem; margin-top: 0.4rem; }
+
+    /* ─────────────────────────────────────────────
+       EXPERIENCE
+    ───────────────────────────────────────────── */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+    .exp-item {
+      display: grid; grid-template-columns: 130px 1fr;
+      gap: 2rem; padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:last-child { border-bottom: none; }
+    .exp-date { color: var(--muted); font-size: 0.7rem; padding-top: 3px; }
+    .exp-duration { color: var(--muted); font-size: 0.65rem; margin-top: 0.3rem; }
+    .exp-role { font-weight: 600; color: #fff; font-size: 0.92rem; margin-bottom: 0.2rem; }
+    .exp-company {
+      color: var(--accent2); font-size: 0.78rem; margin-bottom: 0.8rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .exp-company-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .exp-bullets li {
+      color: var(--muted2); font-size: 0.77rem; line-height: 1.65;
+      padding-left: 1.1rem; position: relative;
+    }
+    .exp-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.65rem; top: 0.15rem; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1rem; }
+    .tag {
+      padding: 0.15rem 0.55rem; border-radius: 4px; font-size: 0.63rem;
+      background: rgba(109,93,252,0.1); color: var(--accent2);
+      border: 1px solid rgba(109,93,252,0.2);
+    }
+
+    /* ─────────────────────────────────────────────
+       PROJECTS PAGE
+    ───────────────────────────────────────────── */
+    .projects-page { padding: 8rem 0 5rem; }
+    .page-head { margin-bottom: 3rem; }
+    .breadcrumb { font-size: 0.7rem; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .breadcrumb span { color: var(--muted2); }
+    .page-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #fff; }
+    .page-desc { color: var(--muted2); font-size: 0.82rem; margin-top: 0.6rem; max-width: 500px; }
+
+    .filter-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .filter-btn {
+      padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.72rem;
+      background: var(--card); color: var(--muted); border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent2); }
+    .filter-btn.active { background: rgba(109,93,252,0.15); color: var(--accent2); border-color: var(--accent); }
+    .filter-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border-radius: 50%; font-size: 0.6rem;
+      background: var(--accent); color: #fff; margin-left: 0.3rem;
+    }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem; }
+    .proj-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+      position: relative; overflow: hidden;
+    }
+    .proj-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+      opacity: 0; transition: opacity 0.22s;
+    }
+    .proj-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+    .proj-card:hover::before { opacity: 1; }
+    .proj-label { font-size: 0.65rem; color: var(--green); font-style: italic; }
+    .proj-title { font-family: 'Syne', sans-serif; font-weight: 700; color: #fff; font-size: 1rem; }
+    .proj-date { font-size: 0.65rem; color: var(--muted); }
+    .proj-desc { color: var(--muted2); font-size: 0.75rem; line-height: 1.65; flex: 1; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
+    .proj-tag {
+      font-size: 0.62rem; padding: 0.12rem 0.45rem; border-radius: 3px;
+      background: rgba(52,211,153,0.07); color: var(--green);
+      border: 1px solid rgba(52,211,153,0.18);
+    }
+    .proj-extra { font-size: 0.62rem; color: var(--muted); padding: 0.12rem 0.45rem; border-radius: 3px; background: var(--bg3); }
+
+    /* ─────────────────────────────────────────────
+       TECH STACK
+    ───────────────────────────────────────────── */
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.5rem; }
+    .stack-group h4 {
+      color: var(--accent2); font-size: 0.68rem; text-transform: uppercase;
+      letter-spacing: 0.09em; margin-bottom: 0.7rem;
+    }
+    .stack-items { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .stack-item {
+      padding: 0.22rem 0.6rem; border-radius: 4px;
+      background: var(--bg3); border: 1px solid var(--border);
+      font-size: 0.7rem; color: var(--text); transition: border-color 0.2s;
+    }
+    .stack-item:hover { border-color: var(--border2); }
+
+    /* ─────────────────────────────────────────────
+       CERTIFICATIONS
+    ───────────────────────────────────────────── */
+    .certs-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .cert-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.4rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      transition: border-color 0.2s;
+    }
+    .cert-card:hover { border-color: var(--border2); }
+    .cert-name { color: var(--text); font-size: 0.85rem; font-weight: 500; }
+    .cert-issuer { color: var(--muted); font-size: 0.7rem; margin-top: 0.2rem; }
+    .cert-date { color: var(--muted); font-size: 0.68rem; white-space: nowrap; text-align: right; }
+
+    /* ─────────────────────────────────────────────
+       ACTIVITIES
+    ───────────────────────────────────────────── */
+    .activities { display: flex; flex-direction: column; gap: 0.6rem; }
+    .act-item {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      color: var(--muted2); font-size: 0.8rem; line-height: 1.5;
+    }
+    .act-dot { color: var(--accent); margin-top: 0.15rem; flex-shrink: 0; }
+
+    /* ─────────────────────────────────────────────
+       CONTACT PAGE
+    ───────────────────────────────────────────── */
+    .contact-page { padding: 8rem 0 5rem; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; }
+    .contact-info h2 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 1rem; }
+    .contact-info p { color: var(--muted2); font-size: 0.8rem; line-height: 1.75; margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.8rem;
+      color: var(--muted2); font-size: 0.78rem;
+      padding: 0.7rem 1rem; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--card);
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent2); transform: translateX(4px); }
+    .contact-link-icon { color: var(--accent2); width: 16px; text-align: center; }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-label { display: block; font-size: 0.7rem; color: var(--muted2); margin-bottom: 0.5rem; }
+    .form-input, .form-textarea {
+      width: 100%; padding: 0.7rem 1rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: none;
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(109,93,252,0.15);
+    }
+    .form-textarea { min-height: 130px; }
+    .form-submit {
+      width: 100%; padding: 0.75rem;
+      background: var(--accent); color: #fff;
+      border-radius: var(--radius); font-size: 0.82rem; font-weight: 600;
+      transition: all 0.22s; border: none;
+      box-shadow: 0 0 20px rgba(109,93,252,0.3);
+    }
+    .form-submit:hover:not(:disabled) { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 0 28px rgba(167,139,250,0.4); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-success {
+      text-align: center; padding: 2rem;
+      color: var(--green); font-size: 0.82rem; border: 1px solid rgba(52,211,153,0.2);
+      border-radius: var(--radius); background: rgba(52,211,153,0.04);
+    }
+
+    /* ─────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+    }
+    .footer-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 2rem;
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2rem;
+    }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--accent2); font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .footer-tagline { color: var(--muted); font-size: 0.72rem; }
+    .footer-col h5 { color: var(--muted2); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.8rem; }
+    .footer-col a {
+      display: block; color: var(--muted); font-size: 0.75rem;
+      margin-bottom: 0.4rem; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--accent2); }
+    .footer-bottom {
+      max-width: 960px; margin: 1.5rem auto 0; padding: 1.5rem 2rem 0;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+      font-size: 0.68rem; color: var(--muted);
+    }
+    .back-top {
+      color: var(--muted); font-size: 0.7rem; transition: color 0.2s;
+    }
+    .back-top:hover { color: var(--accent2); }
+
+    /* ─────────────────────────────────────────────
+       FADE ANIMATION
+    ───────────────────────────────────────────── */
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-delay-1 { transition-delay: 0.1s; }
+    .fade-delay-2 { transition-delay: 0.2s; }
+    .fade-delay-3 { transition-delay: 0.3s; }
+    .fade-delay-4 { transition-delay: 0.4s; }
+
+    /* ─────────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: block; }
+    }
+    @media (max-width: 480px) {
+      .footer-inner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + Babel CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    /* ─── DATA ─── */
+    const DATA = {
+      name: "Monish Kumar T M",
+      role: "ML Engineer",
+      tagline: "Aspiring Machine Learning Engineer skilled in Python, data analysis, and predictive modeling — passionate about building data-driven solutions to real-world problems.",
+      location: "Bangalore, Karnataka, India",
+      email: "monishedu@gmail.com",
+      phone: "+91 9108227744",
+      linkedin: "https://www.linkedin.com/in/monish-kumar-t-m-84a314311",
+      stats: [
+        { num: "2+",  label: "Years of experience" },
+        { num: "3+",  label: "ML projects delivered" },
+        { num: "B.E", label: "ECE · Malnad College" },
+      ],
+      skills: ["Python", "SQL", "TensorFlow", "Keras", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "OpenCV", "PowerBI", "Tableau", "Excel", "Git", "LSTM", "SVM"],
+      experience: [
+        {
+          role: "Associate Business Analyst",
+          company: "42Gears Mobility Solutions",
+          location: "Bangalore, KA",
+          type: "Full-time",
+          start: "Mar 2025", end: "Present",
+          duration: "present",
+          bullets: [
+            "Collaborated with cross-functional teams to gather business requirements and deliver client-focused solutions.",
+            "Applied data analysis & visualization tools (Excel, SQL, PowerBI, Tableau) to identify patterns, optimize workflows, and improve efficiency.",
+            "Developed analytical reports and models that enhanced decision-making and boosted client satisfaction.",
+          ],
+          tags: ["SQL", "Excel", "PowerBI", "Tableau", "Python", "Data Analysis"],
+        },
+        {
+          role: "AI/ML Engineer Intern",
+          company: "Inventeron Technologies",
+          location: "Bangalore, KA",
+          type: "Internship",
+          start: "Aug 2023", end: "Nov 2023",
+          duration: "4 months",
+          bullets: [
+            "Developed a sales prediction model using ML techniques to forecast trends, enabling data-driven decision-making for stakeholders.",
+            "Built a Financial Market Analysis system using Recurrent Neural Networks for real-world time-series forecasting.",
+          ],
+          tags: ["Python", "TensorFlow", "Scikit-learn", "LSTM", "Pandas", "NumPy"],
+        },
+      ],
+      projects: [
+        {
+          id: 1,
+          slug: "sales-prediction",
+          title: "Sales Prediction Using ML",
+          date: "Nov 2023",
+          category: "ML",
+          desc: "Forecasted future sales trends to assist marketing and sales teams in strategic planning. Cleaned and analyzed large datasets, applied regression models (Linear & Logistic), and optimized performance to achieve a 15% improvement in prediction accuracy.",
+          tags: ["Python", "Pandas", "NumPy", "Scikit-learn", "Matplotlib"],
+          extra: 0,
+        },
+        {
+          id: 2,
+          slug: "stock-prediction",
+          title: "Stock Price Prediction · Neural Networks",
+          date: "Oct 2023",
+          category: "ML",
+          desc: "Predicted stock price movements to support data-driven investment strategies. Preprocessed Bloomberg stock data, engineered OHLC & volume features, and implemented LSTM-based neural networks to improve forecasting accuracy under volatile market conditions.",
+          tags: ["Python", "Keras", "TensorFlow", "LSTM"],
+          extra: 2,
+        },
+        {
+          id: 3,
+          slug: "helmet-detection",
+          title: "Helmet Detection & Engine Braking System",
+          date: "May 2024",
+          category: "CV",
+          desc: "Real-time AI system to enhance road safety by detecting helmet usage with computer vision and controlling engine ignition. Implemented CV models, integrated with an engine-locking mechanism, and optimized accuracy for diverse environments.",
+          tags: ["Python", "OpenCV", "TensorFlow", "Keras"],
+          extra: 0,
+        },
+      ],
+      stack: {
+        "Languages":    ["Python", "SQL"],
+        "ML / AI":      ["TensorFlow", "Keras", "Scikit-learn", "LSTM", "SVM", "Decision Trees"],
+        "Data":         ["Pandas", "NumPy", "Matplotlib", "OpenCV"],
+        "Analytics":    ["PowerBI", "Tableau", "Excel"],
+        "Tools":        ["Git", "Jupyter", "VS Code"],
+      },
+      certifications: [
+        { name: "Enhancement of Soft Skills", issuer: "NPTEL Online Certification", date: "Jul – Oct 2022" },
+        { name: "Effective Writing",           issuer: "NPTEL Online Certification", date: "Jul – Oct 2023" },
+      ],
+      activities: [
+        "Vice Chair — IEEE COMSOC Student Branch, MCE",
+        "Designer in Chief — The Literary Club (Jun 2023 – Jun 2024)",
+        "Organized and directed the college annual fest for 3 consecutive years",
+        "Contributed to the college annual magazine as part of the core editorial team",
+      ],
+      education: [
+        { degree: "B.E in Electronics and Communication Engineering", school: "Malnad College of Engineering, Hassan", period: "Dec 2020 – May 2024" },
+        { degree: "PCMC (Pre-University)", school: "Masters Pre-University College, Hassan", period: "Mar 2020" },
+        { degree: "State Syllabus (10th)", school: "Vijaya English School, Hassan", period: "Apr 2018" },
+      ],
+    };
+
+    /* ─── HOOKS ─── */
+    function useFadeIn() {
+      useEffect(() => {
+        const els = document.querySelectorAll('.fade-in');
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        els.forEach(el => io.observe(el));
+        return () => io.disconnect();
+      });
+    }
+
+    /* ─── NAV ─── */
+    function Nav({ page, setPage }) {
+      const [menuOpen, setMenuOpen] = useState(false);
+      const links = ["Home", "Projects", "Contact"];
+      return (
+        <nav>
+          <div className="nav-inner">
+            <button className="nav-logo" onClick={() => { setPage("Home"); setMenuOpen(false); }} style={{background:'none',border:'none',cursor:'pointer'}}>
+              &gt;_ mk<span className="cursor-blink"/>
+            </button>
+            <ul className="nav-links">
+              {links.map(l => (
+                <li key={l}>
+                  <button className={page === l ? "active" : ""} onClick={() => setPage(l)}>{l}</button>
+                </li>
+              ))}
+            </ul>
+            <button className="nav-hamburger" onClick={() => setMenuOpen(o => !o)}>☰</button>
+          </div>
+          <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+            {links.map(l => (
+              <button key={l} onClick={() => { setPage(l); setMenuOpen(false); }}>{l}</button>
+            ))}
+          </div>
+        </nav>
+      );
+    }
+
+    /* ─── FOOTER ─── */
+    function Footer({ setPage }) {
+      return (
+        <footer>
+          <div className="footer-inner">
+            <div>
+              <div className="footer-logo">&gt;_ mk.dev</div>
+              <div className="footer-tagline">ML Engineer · Bangalore, India</div>
+            </div>
+            <div className="footer-col">
+              <h5>Explore</h5>
+              <a href="#" onClick={e => { e.preventDefault(); setPage("Home"); }}>Home</a>
+              <a href="#" onClick={e => { e.preventDefault(); setPage("Projects"); }}>Projects</a>
+              <a href="#" onClick={e => { e.preventDefault(); setPage("Contact"); }}>Contact</a>
+            </div>
+            <div className="footer-col">
+              <h5>Social</h5>
+              <a href={DATA.linkedin} target="_blank">LinkedIn ↗</a>
+              <a href={`mailto:${DATA.email}`}>{DATA.email}</a>
+              <a href={`tel:${DATA.phone}`}>{DATA.phone}</a>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <span>© 2026 Monish Kumar T M</span>
+            <a className="back-top" href="#top" onClick={e => { e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); }}>↑ Back to top</a>
+          </div>
+        </footer>
+      );
+    }
+
+    /* ─── HOME ─── */
+    function Home({ setPage }) {
+      useFadeIn();
+      return (
+        <div className="content-wrap">
+          {/* HERO */}
+          <div className="hero">
+            <div className="hero-glow"/>
+            <div className="hero-glow2"/>
+            <div className="container">
+              <div className="hero-tag fade-in">// aspiring ml engineer</div>
+              <h1 className="fade-in fade-delay-1">
+                Monish<br/><span className="grad">Kumar T M</span>
+              </h1>
+              <p className="hero-desc fade-in fade-delay-2">{DATA.tagline}</p>
+              <div className="hero-location fade-in fade-delay-2">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                {DATA.location}
+              </div>
+              <div className="hero-ctas fade-in fade-delay-3">
+                <a className="btn btn-primary" href={`mailto:${DATA.email}`}>Get in Touch</a>
+                <a className="btn btn-outline" href={DATA.linkedin} target="_blank">LinkedIn ↗</a>
+                <button className="btn btn-outline" onClick={() => setPage("Projects")}>View Projects →</button>
+              </div>
+              <div className="pills-track fade-in fade-delay-3">
+                {DATA.skills.map(s => <span key={s} className="pill">{s}</span>)}
+              </div>
+              <div className="stats-row fade-in fade-delay-4">
+                {DATA.stats.map(s => (
+                  <div key={s.num}>
+                    <div className="stat-num">{s.num}</div>
+                    <div className="stat-label">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* EXPERIENCE */}
+          <div className="section">
+            <div className="container">
+              <div className="section-head fade-in">
+                <div className="section-title"><span>#</span> Work Experience</div>
+              </div>
+              <div className="exp-list">
+                {DATA.experience.map((e, i) => (
+                  <div key={i} className="exp-item fade-in">
+                    <div>
+                      <div className="exp-date">{e.start} – {e.end}</div>
+                      {e.duration !== "present" && <div className="exp-duration">{e.duration}</div>}
+                      <div style={{marginTop:'0.4rem', fontSize:'0.65rem', color:'var(--accent)', border:'1px solid rgba(109,93,252,0.2)', borderRadius:'3px', padding:'0.1rem 0.4rem', display:'inline-block'}}>{e.type}</div>
+                    </div>
+                    <div>
+                      <div className="exp-role">{e.role}</div>
+                      <div className="exp-company">
+                        <span className="exp-company-dot"/>
+                        {e.company} · {e.location}
+                      </div>
+                      <ul className="exp-bullets">
+                        {e.bullets.map((b, j) => <li key={j}>{b}</li>)}
+                      </ul>
+                      <div className="tag-row">
+                        {e.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* FEATURED PROJECTS */}
+          <div className="section">
+            <div className="container">
+              <div className="section-head fade-in" style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:'1rem'}}>
+                <div className="section-title"><span>#</span> Featured Projects</div>
+                <button className="btn btn-outline" onClick={() => setPage("Projects")}>+{DATA.projects.length} Explore All →</button>
+              </div>
+              <div className="projects-grid">
+                {DATA.projects.slice(0,3).map((p,i) => (
+                  <div key={p.id} className={`proj-card fade-in fade-delay-${i+1}`}>
+                    <div className="proj-label">$ {p.slug}</div>
+                    <div className="proj-title">{p.title}</div>
+                    <div className="proj-date">{p.date}</div>
+                    <div className="proj-desc">{p.desc}</div>
+                    <div className="proj-tags">
+                      {p.tags.slice(0,3).map(t => <span key={t} className="proj-tag">{t}</span>)}
+                      {p.extra > 0 && <span className="proj-extra">+{p.extra}</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* TECH STACK */}
+          <div className="section">
+            <div className="container">
+              <div className="section-head fade-in">
+                <div className="section-title"><span>#</span> Tech Stack</div>
+                <div className="section-sub">Tools and technologies I use to build and analyse.</div>
+              </div>
+              <div className="stack-grid">
+                {Object.entries(DATA.stack).map(([cat, items]) => (
+                  <div key={cat} className="stack-group fade-in">
+                    <h4>{cat}</h4>
+                    <div className="stack-items">
+                      {items.map(i => <span key={i} className="stack-item">{i}</span>)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* EDUCATION */}
+          <div className="section">
+            <div className="container">
+              <div className="section-head fade-in">
+                <div className="section-title"><span>#</span> Education</div>
+              </div>
+              <div className="exp-list">
+                {DATA.education.map((e, i) => (
+                  <div key={i} className="exp-item fade-in">
+                    <div className="exp-date">{e.period}</div>
+                    <div>
+                      <div className="exp-role">{e.degree}</div>
+                      <div className="exp-company"><span className="exp-company-dot"/>{e.school}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* CERTIFICATIONS */}
+          <div className="section">
+            <div className="container">
+              <div className="section-head fade-in">
+                <div className="section-title"><span>#</span> Certifications</div>
+              </div>
+              <div className="certs-list">
+                {DATA.certifications.map((c, i) => (
+                  <div key={i} className="cert-card fade-in">
+                    <div>
+                      <div className="cert-name">{c.name}</div>
+                      <div className="cert-issuer">{c.issuer}</div>
+                    </div>
+                    <div className="cert-date">{c.date}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* LEADERSHIP */}
+          <div className="section">
+            <div className="container">
+              <div className="section-head fade-in">
+                <div className="section-title"><span>#</span> Leadership &amp; Activities</div>
+              </div>
+              <div className="activities">
+                {DATA.activities.map((a, i) => (
+                  <div key={i} className="act-item fade-in">
+                    <span className="act-dot">▸</span>
+                    <span>{a}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── PROJECTS PAGE ─── */
+    const CATS = ["All", "ML", "CV"];
+    function Projects() {
+      const [active, setActive] = useState("All");
+      useFadeIn();
+      const filtered = active === "All" ? DATA.projects : DATA.projects.filter(p => p.category === active);
+      const count = cat => cat === "All" ? DATA.projects.length : DATA.projects.filter(p => p.category === cat).length;
+      return (
+        <div className="projects-page">
+          <div className="container">
+            <div className="page-head fade-in">
+              <div className="breadcrumb"><span>Home</span> / Projects</div>
+              <h1 className="page-title">Projects</h1>
+              <p className="page-desc">A selection of projects I've built — from ML models to computer vision systems.</p>
+            </div>
+            <div className="filter-row fade-in">
+              {CATS.map(c => (
+                <button key={c} className={`filter-btn ${active===c?"active":""}`} onClick={() => setActive(c)}>
+                  {c}<span className="filter-count">{count(c)}</span>
+                </button>
+              ))}
+            </div>
+            <div className="projects-grid">
+              {filtered.map((p, i) => (
+                <div key={p.id} className={`proj-card fade-in fade-delay-${(i%3)+1}`}>
+                  <div className="proj-label">$ {p.slug}</div>
+                  <div className="proj-title">{p.title}</div>
+                  <div className="proj-date">{p.date}</div>
+                  <div className="proj-desc">{p.desc}</div>
+                  <div className="proj-tags">
+                    {p.tags.map(t => <span key={t} className="proj-tag">{t}</span>)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── CONTACT PAGE ─── */
+    function Contact() {
+      const [form, setForm] = useState({ name: "", email: "", message: "" });
+      const [sent, setSent] = useState(false);
+      const [sending, setSending] = useState(false);
+      useFadeIn();
+
+      function handleChange(e) {
+        setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+      }
+
+      function handleSubmit(e) {
+        e.preventDefault();
+        setSending(true);
+        // Simulate send — wire up to Formspree or EmailJS for real sending
+        setTimeout(() => { setSending(false); setSent(true); }, 1500);
+      }
+
+      return (
+        <div className="contact-page">
+          <div className="container">
+            <div className="page-head fade-in">
+              <div className="breadcrumb"><span>Home</span> / Contact</div>
+              <h1 className="page-title">Let's talk?</h1>
+              <p className="page-desc">Have a project in mind or just want to chat? I'd love to hear from you!</p>
+            </div>
+            <div className="contact-grid">
+              <div className="contact-info fade-in">
+                <p>Send me a message and I'll get back to you as soon as possible. I'm open to ML projects, data analysis collaborations, and full-time opportunities.</p>
+                <div className="contact-links">
+                  <a className="contact-link" href={`mailto:${DATA.email}`}>
+                    <span className="contact-link-icon">✉</span> {DATA.email}
+                  </a>
+                  <a className="contact-link" href={`tel:${DATA.phone}`}>
+                    <span className="contact-link-icon">📞</span> {DATA.phone}
+                  </a>
+                  <a className="contact-link" href={DATA.linkedin} target="_blank">
+                    <span className="contact-link-icon">in</span> LinkedIn Profile ↗
+                  </a>
+                  <div className="contact-link" style={{cursor:'default'}}>
+                    <span className="contact-link-icon">📍</span> {DATA.location}
+                  </div>
+                </div>
+              </div>
+              <div className="fade-in fade-delay-1">
+                {sent ? (
+                  <div className="form-success">
+                    <div style={{fontSize:'2rem',marginBottom:'0.5rem'}}>✓</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:'1rem',marginBottom:'0.5rem'}}>Message sent!</div>
+                    <div style={{color:'var(--muted)'}}>Thanks for reaching out. I'll get back to you soon.</div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <label className="form-label">Name</label>
+                      <input className="form-input" name="name" value={form.name} onChange={handleChange} placeholder="Your name" required />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Email</label>
+                      <input className="form-input" type="email" name="email" value={form.email} onChange={handleChange} placeholder="your@email.com" required />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Message</label>
+                      <textarea className="form-textarea" name="message" value={form.message} onChange={handleChange} placeholder="What's on your mind?" required />
+                    </div>
+                    <button className="form-submit" type="submit" disabled={sending}>
+                      {sending ? "Sending..." : "Send Message →"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── APP ─── */
+    function App() {
+      const [page, setPage] = useState("Home");
+
+      const navigate = useCallback((p) => {
+        setPage(p);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, []);
+
+      return (
+        <div className="page-wrap" id="top">
+          <Nav page={page} setPage={navigate} />
+          {page === "Home"     && <Home setPage={navigate} />}
+          {page === "Projects" && <Projects />}
+          {page === "Contact"  && <Contact />}
+          <Footer setPage={navigate} />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
